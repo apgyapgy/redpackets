@@ -6,8 +6,8 @@
 		<title>淘宝红包</title>
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/common.min.css" />
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/swipe.min.css" />
-		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css" />
-		<!--<link rel="stylesheet" href="css/redPackets.css" />-->
+		<!--<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css" />-->
+		<link rel="stylesheet" href="css/redPackets.css" />
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/jquery-1.8.2.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/LAB.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/spin.min.js"></script>
@@ -34,6 +34,11 @@
 			</ul>
 		</div>
 		<div id="loading"></div>
+		<div class="tipWrapper">
+			<div id="tip">
+				<span id="sure"></span>
+			</div>
+		</div>
 	</body>
 	<script src="https://static.fuiou.com/sys/o2o/redpackets/js/stat_o2o.js"></script>
 	<script type="text/javascript">
@@ -76,7 +81,7 @@
 				_fuappJs = "libs/fuapp.js";
 				serverIP_JS = "";
 			}
-			//_fuappJs = "libs/fuapp.js";serverIP_JS="";//调试
+			_fuappJs = "libs/fuapp.js";serverIP_JS="";//调试
 			$LAB.script(_cordovaJs).wait()
 				.script(_fuappJs + '?v='+fuappJs_v)
 				.script(serverIP_JS + 'js/common_asy.js?v=' + common_asy_v).wait(function(){
@@ -87,7 +92,6 @@
 					var _getList = function(){
 						console.log("in getList");
 						$.ajax({
-							//url:"./js/data.json",
 							url:_pre+"200006",
 							type:"GET",
 							dataType:"jsonp",
@@ -97,7 +101,6 @@
 							cache:false,
 							contentType:"application/x-www-form-urlencoded;charset=utf-8",
 							data:{
-								//"subjectId":"C41069092952783",
 								"subjectId":"C38583840074554",
 								"networkTp":networkTp,
 								"userId":userId
@@ -196,31 +199,50 @@
 							}
 						});
 					}
-					//_getList();
 					//点击商品跳转页面
 					$(".swiper-wrapper").on("click",".onclick",function(){ //oprStat(userId, 'appIndex', 'clk', SJMD);
-						_jump($(this));
+						var _this = this;
+						$.ajax({
+							url:"https://ufly.fuiou.com:9618/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
+							type:"GET",
+							dataType:"jsonp",
+							async:true,
+							jsonp:'jsonpCallback',
+							timeout:20000,
+							cache:false,
+							contentType:"application/x-www-form-urlencoded;charset=utf-8",
+							success:function(res){
+								console.log(res);
+								if(res.count == 0){
+									console.log("没点过");
+									$(".tipWrapper").addClass("active");
+									$("#sure").on("click",function(){
+										console.log("click");
+										$(".tipWrapper").removeClass("active");
+										_jump($(_this));
+									});
+								}else{
+									_jump($(_this));
+								}
+							},
+							error:function(res){
+								console.log("error:",res);
+							}
+						});
+						//_jump($(this));
 					});
 					$("#list").on("click",".onclick",function(){
 						_jump($(this));
 					});
 					//事件埋点
 					$(".swiper-wrapper").on("click",".oprStat",function(){
-						//var _d = new Date();
-						//var _time = "";
 						var _mid = $(this).attr("data-mid");
-						//_time += _d.getFullYear()+"/"+(_d.getMonth()+1)+"/"+_d.getDate()+" ";
-						//_time += _d.getHours()+":"+_d.getMinutes()+":"+_d.getSeconds();
 						var _os = Android?"Android":"IOS";
 						console.log("userId:",userId,",os:",_os,",mid:",_mid);
 						oprStat(userId,_os,"clk",_mid);
 					});
 					$("#list").on("click",".oprStat",function(){
-						//var _d = new Date();
-						//var _time = "";
 						var _mid = $(this).attr("data-mid");
-						//_time += _d.getFullYear()+"/"+(_d.getMonth()+1)+"/"+_d.getDate()+" ";
-						//_time += _d.getHours()+":"+_d.getMinutes()+":"+_d.getSeconds();
 						var _os = Android?"Android":"IOS";
 						console.log("userId:",userId,",os:",_os,",mid:",_mid);
 						oprStat(userId,_os,"clk",_mid);

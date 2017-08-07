@@ -19,7 +19,7 @@ if(isDebug){
 			success(obj);
 		},
 		userInfo:function(success, failed){
-			var obj = {rspCode:"0000",rspDesc:"成功",loginId:"119807005899227",mobile:"13006083900",userName:"jane",ticket:"001",networkType:"1"};
+			var obj = {rspCode:"0000",rspDesc:"成功",loginId:"13625625040",mobile:"13006083900",userName:"jane",ticket:"001",networkType:"1"};
 			success(obj);
 		},
 		userHome:function(success, failed){
