@@ -15,8 +15,8 @@ var serverIP_sy = "https://lccs.fuiou.com:10522/fund/";//理财新用户取出
 	       
 var getSessionId=function(suc){
 	fuApp.userInfo(function(userInfo){
-			var sessionObj = userInfo.ticket;
-			suc(sessionObj);
+		var sessionObj = userInfo.ticket;
+		suc(sessionObj);
 	},function(){
 		showErrorTipCon("用户信息获取失败，请重新登录");
 	});

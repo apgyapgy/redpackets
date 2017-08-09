@@ -28,15 +28,17 @@
 			    <div class="swiper-pagination"></div>
 			</div>
 		</div>
-		<div class="content">
-			<span class="title"></span>
-			<ul id="list" class="clearfix onclick">
-			</ul>
+		<div id="content">
+			<!--<div class="con">
+				<span class="title"></span>
+				<ul class="list" class="clearfix onclick">
+				</ul>
+			</div>-->
 		</div>
 		<div id="loading"></div>
 		<div class="tipWrapper">
 			<div id="tip">
-				<span id="sure"></span>
+				<span id="sure">朕知道了</span>
 			</div>
 		</div>
 	</body>
@@ -84,8 +86,9 @@
 			_fuappJs = "libs/fuapp.js";serverIP_JS="";//调试
 			$LAB.script(_cordovaJs).wait()
 				.script(_fuappJs + '?v='+fuappJs_v)
+				.script("js/jquery.lazyload.min.js")
 				.script(serverIP_JS + 'js/common_asy.js?v=' + common_asy_v).wait(function(){
-					var userId,networkTp,Ptp,Ver,Phone,countDownArr=[];//userId = "15316117950";
+					var userId,networkTp,Ptp,Ver,Phone,countDownArr=[],subjectId;//userId = "15316117950";
 					//var _pre = "http://192.168.42.26:8088/",_imgPre="http://192.168.8.18:9999/";
 					//var _pre = "https://buy.fuiou.com/TEST/",_imgPre = "https://static.fuiou.com/sys/o2o/";//测试
 					var _pre = "https://buy.fuiou.com/",_imgPre = "https://static.fuiou.com/sys/o2o/";
@@ -101,13 +104,16 @@
 							cache:false,
 							contentType:"application/x-www-form-urlencoded;charset=utf-8",
 							data:{
-								"subjectId":"C38583840074554",
+								"subjectId":subjectId,
 								"networkTp":networkTp,
 								"userId":userId
 							},
-							success:function(data){		console.log("200006data:",JSON.stringify(data));
+							success:function(data){		
+								//console.log("200006data:",JSON.stringify(data));
+								console.log("200006data:",data);
 								if(data.types.length){
-									var _lists = data.types[0].groupons;
+									var _types = data.types;
+									//var _lists = data.types[0].groupons;
 								}
 								var _banners = data.images;
 								if(_banners.length){
@@ -126,28 +132,31 @@
 										    // 如果需要分页器
 										    pagination: '.swiper-pagination'
 										}); 
+									}else{
+										$(".swiper-pagination").remove();
 									}
 									$(".banner").addClass("active");
 								}
-								if(_lists){
+								if(_types){
 									var _domArr = [];
-									for(var i = 0;i < _lists.length;i++){
-										var _domstr = "";
-										var _dt = _lists[i].dueTm?_lists[i].dueTm.time:new Date().getTime();//倒计时时间
-										var _oprice = _lists[i]["oprice"],_gprice =_lists[i]["gprice"];//oprice原价，gprice券后价
-										//原价-券后价  =》 优惠券价
-										var _qprice = Math.abs((_oprice - _gprice)/100);
-										_gprice /= 100;
-										if(Math.abs(_gprice) > Math.abs(parseInt(_gprice))){//券后价有小数  10分=0.1元
-											var numToStr = "" + _gprice;
-											var _floatPrice = numToStr.substring(numToStr.indexOf(".")+1);
-											_opstr = '<b class="yuan">'+parseInt(_gprice)+'</b><b class="float">.'+_floatPrice+'</b>'
-										}else{
-											_opstr = '<b class="yuan">'+_gprice+'</b>';
-										}
-										//var $li = $(_lis[i]);
-										var _solded = _lists[i].stock>10000?(parseInt(_lists[i].stock/1000)/10)+"万":_lists[i].stock;
-										_domstr += '<li class="onclick oprStat active" data-url="'+_lists[i].outLinkUrl+'" data-mid="'+_lists[i].grouponId+'">'
+									for(var i = 0;i < _types.length;i++){
+										var _lists = _types[i].groupons;
+										var _domstr = '<div class="con"><img class="title onclick oprStat" data-mid="'+_types[i].tpName+'" data-url="'+_types[i].images.linkUrl+'" src="'+(_imgPre+_types[i].images.imgUrl)+'"/><ul class="list clearfix onclick">';
+										for(var j = 0;j < _lists.length;j++){
+											var _dt = _lists[j].dueTm?_lists[j].dueTm.time:new Date().getTime();//倒计时时间
+											var _oprice = _lists[j]["oprice"],_gprice =_lists[j]["gprice"];//oprice原价，gprice券后价
+											//原价-券后价  =》 优惠券价
+											var _qprice = Math.abs((_oprice - _gprice)/100);
+											_gprice /= 100;
+											if(Math.abs(_gprice) > Math.abs(parseInt(_gprice))){//券后价有小数  10分=0.1元
+												var numToStr = "" + _gprice;
+												var _floatPrice = numToStr.substring(numToStr.indexOf(".")+1);
+												_opstr = '<b class="yuan">'+parseInt(_gprice)+'</b><b class="float">.'+_floatPrice+'</b>'
+											}else{
+												_opstr = '<b class="yuan">'+_gprice+'</b>';
+											}
+											var _solded = _lists[j].stock>10000?(parseInt(_lists[j].stock/1000)/10)+"万":_lists[j].stock;
+											_domstr += '<li class="onclick oprStat active" data-url="'+_lists[j].outLinkUrl+'" data-mid="'+_lists[j].grouponId+'">'
 														+'<div class="cutdown" data-endtime="'+_dt+'">'
 															+'<span class="hour"></span>'
 															+'<b>:</b>'
@@ -156,25 +165,35 @@
 															+'<span class="seconds"></span>'
 														+'</div>'
 														+'<div class="img_wrap">'
-															+'<img src="'+(_imgPre+_lists[i]["images"][0]["imgUrl"])+'" alt="" />'
+															//+'<img src="'+(_imgPre+_lists[i]["images"][0]["imgUrl"])+'" alt="" />'
+															+'<img class="lazy" data-original="'+(_imgPre+_lists[j]["images"][0]["imgUrl"])+'">'
 														+'</div>'
 														+'<div class="info_wrap">'
 															+'<div class="voucher">'
 																+'<div class="voucher_price"><span>领券</span><b>'+_qprice+'元</b></div>'
 																+'<div class="buy_price">券后价:￥'+_opstr+'</div>'
 															+'</div>'
-															+'<div class="name">'+_lists[i].title+'</div>'
+															+'<div class="name">'+_lists[j].title+'</div>'
 															+'<span class="solded">已售<b>'+_solded+'</b>件</span>'
 														+'</div>'
 													+'</li>'
-										
+										}
+										_domstr += '</ul></div>';
 										_domArr.push(_domstr);
-									}  
+									}
 									_domArr = _domArr.join("");
-									$("#list").html(_domArr);
-									$(".content").addClass("active");
+									$("#content").html(_domArr);
+									//图片懒加载
+									$("img.lazy").lazyload({
+										placeholder : "https://static.fuiou.com/sys/o2o/cfront/images/load_home_top_banner_03.jpg",  //用图片提前占位
+										effect: "fadeIn", //载入使用何种效果,effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,
+										event: 'scroll' ,
+										failure_limit : 10, //容差范围
+										threshold : 10 //提前开始加载
+									});
+									$("#content").addClass("active");
 									//倒计时
-									var _cutdowns = $("#list li .cutdown");
+									var _cutdowns = $(".list li .cutdown");
 									for(var j = 0;j < _cutdowns.length;j++){
 										var $ct = $(_cutdowns[j]);
 										var _ftime = getCutDownTime($ct.attr("data-endtime")-0);
@@ -203,7 +222,8 @@
 					$(".swiper-wrapper").on("click",".onclick",function(){ //oprStat(userId, 'appIndex', 'clk', SJMD);
 						var _this = this;
 						$.ajax({
-							url:"https://ufly.fuiou.com:9618/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
+							//url:"https://ufly.fuiou.com:9618/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
+							url:"https://fly.fuiou.com/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
 							type:"GET",
 							dataType:"jsonp",
 							async:true,
@@ -216,9 +236,11 @@
 								if(res.count == 0){
 									console.log("没点过");
 									$(".tipWrapper").addClass("active");
+									preventScroll();
 									$("#sure").on("click",function(){
 										console.log("click");
 										$(".tipWrapper").removeClass("active");
+										allowScroll();
 										_jump($(_this));
 									});
 								}else{
@@ -229,10 +251,12 @@
 								console.log("error:",res);
 							}
 						});
-						//_jump($(this));
 					});
-					$("#list").on("click",".onclick",function(){
+					$("#content").on("click",".con .list .onclick",function(){
 						_jump($(this));
+					});
+					$("#content").on("click",".con .title.onclick",function(){
+						_jump($(this),true);
 					});
 					//事件埋点
 					$(".swiper-wrapper").on("click",".oprStat",function(){
@@ -241,14 +265,14 @@
 						console.log("userId:",userId,",os:",_os,",mid:",_mid);
 						oprStat(userId,_os,"clk",_mid);
 					});
-					$("#list").on("click",".oprStat",function(){
+					$("#content").on("click",".con .oprStat",function(){
 						var _mid = $(this).attr("data-mid");
 						var _os = Android?"Android":"IOS";
 						console.log("userId:",userId,",os:",_os,",mid:",_mid);
 						oprStat(userId,_os,"clk",_mid);
 					});
 					//跳转页面
-					var _jump = function(_obj){
+					var _jump = function(_obj,flag){
 						var _url = _obj.attr("data-url");
 						if(!_url){
 							return;
@@ -262,6 +286,9 @@
 							"scrollToHead":false,
 							"isCloseCurrent":false
 						};
+						if(flag){
+							_param.showBar = "0";
+						}
 						openNewPage(_url,_param);
 					}
                     /*打开新的页面窗口*/
@@ -302,6 +329,24 @@
 							"s":nS
 						}
 					}
+					//阻止页面滚动
+					var preventScroll = function(){
+						window.ontouchmove = function(e) {
+						    e.preventDefault && e.preventDefault();
+						    e.returnValue = false;
+						    e.stopPropagation && e.stopPropagation();
+						    return false;
+						}
+					}
+					//允许页面滚动 
+					var allowScroll = function(){
+						window.ontouchmove = function(e) {
+					        e.preventDefault && e.preventDefault();
+					        e.returnValue = true;
+					        e.stopPropagation && e.stopPropagation();
+					        return true;
+					    }
+					}
 					//倒计时
 					var _countDown = function(_arr){
 						var _timer;
@@ -336,6 +381,8 @@
 					}
 					
 					registerDeviceready(function(){
+						subjectId = getAddressParam("subjectId")?getAddressParam("subjectId"):"C38583840074554";
+						console.log("subjectId:",subjectId);
 					 	//返回
 	                    $("#back").click(function(){
 	                    	console.log("click back");
