@@ -220,37 +220,44 @@
 					}
 					//点击商品跳转页面
 					$(".swiper-wrapper").on("click",".onclick",function(){ //oprStat(userId, 'appIndex', 'clk', SJMD);
-						var _this = this;
-						$.ajax({
-							//url:"https://ufly.fuiou.com:9618/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
-							url:"https://fly.fuiou.com/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
-							type:"GET",
-							dataType:"jsonp",
-							async:true,
-							jsonp:'jsonpCallback',
-							timeout:20000,
-							cache:false,
-							contentType:"application/x-www-form-urlencoded;charset=utf-8",
-							success:function(res){
-								console.log(res);
-								if(res.count == 0){
-									console.log("没点过");
-									$(".tipWrapper").addClass("active");
-									preventScroll();
-									$("#sure").on("click",function(){
-										console.log("click");
-										$(".tipWrapper").removeClass("active");
-										allowScroll();
+						var _compareUrl = 'https://uland.taobao.com/thb?pid=mm_124210582_30222621_111850426';
+						var _dataUrl = $(this).attr("data-url");
+						if(_compareUrl === _dataUrl){
+							var _this = this;
+							$.ajax({
+								//url:"https://ufly.fuiou.com:9618/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
+								url:"https://fly.fuiou.com/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
+								type:"GET",
+								dataType:"jsonp",
+								async:true,
+								jsonp:'jsonpCallback',
+								timeout:20000,
+								cache:false,
+								contentType:"application/x-www-form-urlencoded;charset=utf-8",
+								success:function(res){
+									console.log(res);
+									if(res.count == 0){
+										console.log("没点过");
+										$(".tipWrapper").addClass("active");
+										preventScroll();
+										$("#sure").on("click",function(){
+											console.log("click");
+											$(".tipWrapper").removeClass("active");
+											allowScroll();
+											_jump($(_this));
+										});
+									}else{
 										_jump($(_this));
-									});
-								}else{
-									_jump($(_this));
+									}
+								},
+								error:function(res){
+									console.log("error:",res);
 								}
-							},
-							error:function(res){
-								console.log("error:",res);
-							}
-						});
+							});
+						}else{
+							_jump($(this));
+						}
+						
 					});
 					$("#content").on("click",".con .list .onclick",function(){
 						_jump($(this));
