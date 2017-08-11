@@ -229,10 +229,10 @@ body>.header{
 	-moz-transform:translateX(-50%);
 	-ms-transform:translateX(-50%);
 	transform:translateX(-50%);
-	width:5.86rem;
-	height:6.08rem;
-	background:url(../img/redpackets/popup_new.png) no-repeat center;
-	background-size:5.86rem 6.08rem;
+	width:5.76rem;
+	height:6.06rem;
+	background:url(../img/redpackets/popup_n.png) no-repeat center;
+	background-size:5.76rem 6.06rem;
 	overflow:hidden;
 }
 .tipWrapper #tip #sure{

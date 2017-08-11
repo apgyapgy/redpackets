@@ -1,6 +1,6 @@
 var iOS = /(iPad|iPhone|iPod)/g.test(window.navigator.userAgent);
 var Android = /Android/i.test(window.navigator.userAgent);
-var isDebug = true;//若在本地调试，改为true,uat或生产环境改为false
+var isDebug = false;//若在本地调试，改为true,uat或生产环境改为false
 if(isDebug){
 	var fuApp = {
 		pay:function(success, failed){

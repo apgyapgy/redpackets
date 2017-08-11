@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="UTF-8"/>
 		<meta type="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
 		<title>淘宝红包</title>
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/common.min.css" />
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/swipe.min.css" />
-		<!--<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css" />-->
-		<link rel="stylesheet" href="css/redPackets.css" />
+		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css?v=1.0.0" />
+		<!--<link rel="stylesheet" href="css/redPackets.css" />-->
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/jquery-1.8.2.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/LAB.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/spin.min.js"></script>
@@ -29,11 +29,6 @@
 			</div>
 		</div>
 		<div id="content">
-			<!--<div class="con">
-				<span class="title"></span>
-				<ul class="list" class="clearfix onclick">
-				</ul>
-			</div>-->
 		</div>
 		<div id="loading"></div>
 		<div class="tipWrapper">
@@ -83,7 +78,7 @@
 				_fuappJs = "libs/fuapp.js";
 				serverIP_JS = "";
 			}
-			_fuappJs = "libs/fuapp.js";serverIP_JS="";//调试
+			//_fuappJs = "libs/fuapp.js";serverIP_JS="";//调试
 			$LAB.script(_cordovaJs).wait()
 				.script(_fuappJs + '?v='+fuappJs_v)
 				.script("js/jquery.lazyload.min.js")
@@ -109,8 +104,8 @@
 								"userId":userId
 							},
 							success:function(data){		
-								//console.log("200006data:",JSON.stringify(data));
-								console.log("200006data:",data);
+								console.log("200006data:",JSON.stringify(data));
+								//console.log("200006data:",data);
 								if(data.types.length){
 									var _types = data.types;
 									//var _lists = data.types[0].groupons;
@@ -155,6 +150,11 @@
 											}else{
 												_opstr = '<b class="yuan">'+_gprice+'</b>';
 											}
+											if(_lists[j]['images'].length){
+												var _imgStr = '<img class="lazy" data-original="'+(_imgPre+_lists[j]["images"][0]["imgUrl"])+'">';
+											}else{
+												_imgStr = '<img class="lazy" data-original="">';
+											}
 											var _solded = _lists[j].stock>10000?(parseInt(_lists[j].stock/1000)/10)+"万":_lists[j].stock;
 											_domstr += '<li class="onclick oprStat active" data-url="'+_lists[j].outLinkUrl+'" data-mid="'+_lists[j].grouponId+'">'
 														+'<div class="cutdown" data-endtime="'+_dt+'">'
@@ -165,8 +165,7 @@
 															+'<span class="seconds"></span>'
 														+'</div>'
 														+'<div class="img_wrap">'
-															//+'<img src="'+(_imgPre+_lists[i]["images"][0]["imgUrl"])+'" alt="" />'
-															+'<img class="lazy" data-original="'+(_imgPre+_lists[j]["images"][0]["imgUrl"])+'">'
+															+_imgStr
 														+'</div>'
 														+'<div class="info_wrap">'
 															+'<div class="voucher">'
@@ -176,7 +175,7 @@
 															+'<div class="name">'+_lists[j].title+'</div>'
 															+'<span class="solded">已售<b>'+_solded+'</b>件</span>'
 														+'</div>'
-													+'</li>'
+													+'</li>';
 										}
 										_domstr += '</ul></div>';
 										_domArr.push(_domstr);
@@ -206,7 +205,7 @@
 										if(!(_ftime.h=="00"&&_ftime.m=="00"&&_ftime.s=="00")){
 											$ct.flag = true;
 											countDownArr.push($ct);//将需要倒计时的加在一个数组中
-										}
+										} 
 									}
 									_countDown(countDownArr);//开始倒计时
 								}
@@ -237,10 +236,9 @@
 								success:function(res){
 									console.log(res);
 									if(res.count == 0){
-										console.log("没点过");
 										$(".tipWrapper").addClass("active");
 										preventScroll();
-										$("#sure").on("click",function(){
+										$("#sure").unbind("click").on("click",function(){
 											console.log("click");
 											$(".tipWrapper").removeClass("active");
 											allowScroll();
@@ -252,6 +250,7 @@
 								},
 								error:function(res){
 									console.log("error:",res);
+									_jump($(_this));
 								}
 							});
 						}else{

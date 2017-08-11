@@ -80,7 +80,7 @@ var ajaxAsync = function(options){/*url,params,success,fail,spinner*/
 	});
 };
 
-var isDebug = true;//若在本地调试，改为true,uat或生产环境改为false
+var isDebug = false;//若在本地调试，改为true,uat或生产环境改为false
 if(isDebug){
 	__cordovaJs = false;
 	Android = true;
