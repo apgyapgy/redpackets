@@ -104,8 +104,8 @@
 								"userId":userId
 							},
 							success:function(data){		
-								console.log("200006data:",JSON.stringify(data));
-								//console.log("200006data:",data);
+								//console.log("200006data:",JSON.stringify(data));
+								console.log("200006data:",data);
 								if(data.types.length){
 									var _types = data.types;
 									//var _lists = data.types[0].groupons;
@@ -293,8 +293,11 @@
 							"isCloseCurrent":false
 						};
 						if(flag){
-							_param.showBar = "0";
+							if(_url.indexOf("redPackets") != -1){
+								_param.showBar = "0";
+							}
 						}
+						console.log("open new page param:",_param);
 						openNewPage(_url,_param);
 					}
                     /*打开新的页面窗口*/
