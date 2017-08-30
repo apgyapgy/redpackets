@@ -1,6 +1,9 @@
 var iOS = /(iPad|iPhone|iPod)/g.test(window.navigator.userAgent);
 var Android = /Android/i.test(window.navigator.userAgent);
 var isDebug = false;//若在本地调试，改为true,uat或生产环境改为false
+if(window.location.hostname === "192.168.42.33"){
+	isDebug = true;
+}
 if(isDebug){
 	var fuApp = {
 		pay:function(success, failed){
@@ -111,6 +114,17 @@ if(isDebug){
             var obj = {rspCode:"0000",rspDesc:"成功"};
             success(obj);
         },
+        openTaobao:function(success,failed,dataInfo){
+        	var _random = Math.round(Math.random());
+        	var obj = {rspCode:'0000',rspDesc:"成功"};
+        	if(_random){
+        		success(obj);
+        	}else{
+        		obj.rspCode = '0001';
+        		obj.rspDesc = '失败';
+        		failed(obj);
+        	}
+        }
 	};
 }else{
     var u = navigator.userAgent, app = navigator.appVersion;
@@ -367,6 +381,15 @@ if(isDebug){
 					}
 				}, failed, "FuApp", "receiveParams", [dataInfo]);
 			},
+			openTaobao:function(success,failed,dataInfo){
+				cordova.exec(function(data){
+					if(Android){
+						success(JSON.parse(data));
+					}else if(IOS){
+						success(JSON.parse(JSON.stringify(data)));
+					}
+				},failed,'FuApp','openTaobao',[dataInfo]);
+			}
 	}
 }
 

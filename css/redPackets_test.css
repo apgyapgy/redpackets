@@ -261,41 +261,47 @@ body>.header{
 	text-align:center;
 	border-radius:0.64rem;
 }
-/*back top*/
-/*#top{
-	display: none;
-	position:fixed;
-	right:.5rem;
-	top:9rem;
-	width:.9rem;
-	height:.9rem;
-	border-radius: 50%;
-	background:url(../img/redpackets/toTop.png) no-repeat center;
-	background-size:.9rem auto;
-}*/
-#top{
-	display:none;
-	position:fixed;
-	right:.5rem;
-	bottom:1rem;
-	width:.9rem;
-	height:.9rem;
-	border-radius:50%;
-	background:#fff;
-	border:1px solid #ccc;
-	box-sizing: border-box;
-}
-#top>span{
-	display:block;
+/*底部*/
+.footer-padding{
 	width:100%;
-	height:50%;
+	height:1.2rem;
 }
-#top>span.icon{
-	background:url(https://static.fuiou.com/sys/o2o/redpackets/test/img/redpackets/top.png) no-repeat center bottom;
-	background-size:.24rem .28rem;
+.th-footer{
+	width: 100%;
+	height: 1.2rem;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: #fff;
+	z-index: 100;
+	border-top: 1px solid #DBDBDB;
 }
-#top>span.words{
-	font-size:12px;
-	line-height:.3rem;
-	text-align:center;
+.th-footer>div{
+	width: 25%;
+	height: 5rem;
+	float: left;
+}
+.th-footer>div>p{
+	height: 1.9rem;
+	line-height: 1.9rem;
+	font-size: 1.2rem;
+	text-align: center;
+	color: #5B5B5B;
+}
+.th-footer .footer-icon{
+	width: 2.2rem;
+	height: 2.2rem;
+	margin: 0.4rem auto 0.2rem;
+	display: block;
+	position: relative;
+}
+.footer-icon>img{
+	width: 2.2rem;
+	height: 2.2rem;
+	position: absolute;
+	top:0;
+	left:0;
+}
+.th-footer .blueBtn{
+	color: #0A67BF;
 }

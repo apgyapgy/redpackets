@@ -81,6 +81,9 @@ var ajaxAsync = function(options){/*url,params,success,fail,spinner*/
 };
 
 var isDebug = false;//若在本地调试，改为true,uat或生产环境改为false
+if(window.location.hostname === "192.168.42.33"){
+	isDebug = true;
+}
 if(isDebug){
 	__cordovaJs = false;
 	Android = true;
