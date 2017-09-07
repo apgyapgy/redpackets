@@ -262,18 +262,18 @@ body>.header{
 	border-radius:0.64rem;
 }
 /*back top*/
-/*#top{
+#top{
 	display: none;
 	position:fixed;
 	right:.5rem;
-	top:9rem;
-	width:.9rem;
-	height:.9rem;
+	bottom:1rem;
+	width:.8rem;
+	height:.8rem;
 	border-radius: 50%;
-	background:url(../img/redpackets/toTop.png) no-repeat center;
-	background-size:.9rem auto;
-}*/
-#top{
+	background:url(https://static.fuiou.com/sys/o2o/redpackets/img/redpackets/toTop.png) no-repeat center;
+	background-size:.8rem auto;
+}
+/*#top{
 	display:none;
 	position:fixed;
 	right:.5rem;
@@ -291,11 +291,11 @@ body>.header{
 	height:50%;
 }
 #top>span.icon{
-	background:url(https://static.fuiou.com/sys/o2o/redpackets/test/img/redpackets/top.png) no-repeat center bottom;
+	background:url(https://static.fuiou.com/sys/o2o/redpackets/img/redpackets/top.png) no-repeat center bottom;
 	background-size:.24rem .28rem;
 }
 #top>span.words{
 	font-size:12px;
 	line-height:.3rem;
 	text-align:center;
-}
+}*/

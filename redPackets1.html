@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,7 +7,7 @@
 		<title>淘宝红包</title>
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/common.min.css" />
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/swipe.min.css" />
-		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css?v=1.0.3" />
+		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/test/css/redPackets.css?v=1.0.2" />
 		<!--<link rel="stylesheet" href="css/redPackets.css" />-->
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/jquery-1.8.2.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/LAB.min.js"></script>
@@ -95,7 +96,6 @@
 					//var _pre = "http://192.168.42.26:8088/",_imgPre="http://192.168.8.18:9999/";
 					//var _pre = "https://buy.fuiou.com/TEST/",_imgPre = "https://static.fuiou.com/sys/o2o/";//测试
 					var _pre = "https://buy.fuiou.com/",_imgPre = "https://static.fuiou.com/sys/o2o/";
-					var iosCanJump = true;//判断ios版本是否可跳转淘宝客 3.0.2
 					var _getList = function(){
 						console.log("in getList");
 						$.ajax({
@@ -165,7 +165,7 @@
 												_imgStr = '<img class="lazy" data-original="">';
 											}
 											var _solded = _lists[j].stock>10000?(parseInt(_lists[j].stock/1000)/10)+"万":_lists[j].stock;
-											_domstr += '<li class="onclick oprStat active" data-url="'+_lists[j].outLinkUrl+'" data-mid="taobao-'+_lists[j].grouponId+'">'
+											_domstr += '<li class="onclick oprStat active" data-url="'+_lists[j].outLinkUrl+'" data-mid="'+_lists[j].grouponId+'">'
 														+'<div class="cutdown" data-endtime="'+_dt+'">'
 															+'<span class="hour"></span>'
 															+'<b>:</b>'
@@ -316,37 +316,27 @@
 							}
 						}
 						console.log("open new page param:",_param);
-						if(iosCanJump){
-							if(_openTaobaoFlag){//如果title是淘宝链接，外呼淘宝
-								try{
-									var _tbParam = {
-										url:_url
-									}
-									//如果是顶部banner 且是安卓系统，传openType为2，用H5打开页面
-									if(_obj.hasClass("swiper-slide") && Ptp == 2){
-										_tbParam.openType = 2;
-										console.log("banner用h5打开");
-									}else{
-										console.log("淘宝打开");
-									}
-									console.log("taobaoParam:",_tbParam);
-									fuApp.openTaobao(function(e){
-									},function(e){
-										openNewPage(_url,_param);
-									},_tbParam);
-								}catch(e){
-									console.log("淘宝打开失败，用h5打开");
-									openNewPage(_url,_param);
+						if(_openTaobaoFlag){//如果title是淘宝链接，外呼淘宝
+							try{
+								var _tbParam = {
+									url:_url
 								}
-							}else{
-								//_obj.removeClass("actived");
-								console.log("链接不是淘宝链接，h5打开");
+								if(_obj.hasClass("swiper-slide") && Ptp == 2){
+									_tbParam.openType = 2;
+								}
+								console.log("taobaoParam:",_tbParam);
+								fuApp.openTaobao(function(e){
+								},function(e){
+									openNewPage(_url,_param);
+								},_tbParam);
+							}catch(e){
 								openNewPage(_url,_param);
 							}
 						}else{
-							console.log("ios不能跳转，h5打开");
+							//_obj.removeClass("actived");
 							openNewPage(_url,_param);
 						}
+						//openNewPage(_url,_param);
 					}
                     /*打开新的页面窗口*/
 					var openNewPage = function(url, param_obj) {
@@ -480,9 +470,6 @@
 										Ptp = 2;
 									}else{
 										Ptp = 1;
-										if(data.appVer <= '3.0.2'){
-											iosCanJump = false;
-										}
 									}
 									dtd.resolve();
 								}

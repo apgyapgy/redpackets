@@ -1,8 +1,7 @@
-
 var debug = false;
 var statUrl = "https://flystat.fuiou.com/statAction?callback=?";
 if(debug){
-		statUrl="http://192.168.8.34:9010/fly-oprstat/statAction?callback=?";
+	statUrl="http://192.168.8.34:9010/fly-oprstat/statAction?callback=?";
 }
 var sys = "o2o";
 
@@ -25,12 +24,12 @@ function oprStat(user,page,event,eventDetail){
 
 function _fly_stat(sys,user,href,page,event,eventDetail){
 	var data = {
-			sys:sys,
-			user:user,
-			href:href,
-			page:page,   
-			event:event,
-			eventDetail:eventDetail
+		sys:sys,
+		user:user,
+		href:href,
+		page:page,   
+		event:event,
+		eventDetail:eventDetail
 	};
 	_fly_ajax(statUrl,data);
 }
