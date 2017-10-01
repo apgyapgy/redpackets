@@ -42,7 +42,7 @@ if(isDebug){
 			success(obj);
 		},
 		deviceInfo:function(success, failed){
-			var obj = {rspCode:"0000",rspDesc:"成功",os:"android",osVer:"4.4.4",appVer:"1.02.0"};
+			var obj = {rspCode:"0000",rspDesc:"成功",os:"android",osVer:"4.4.4",appVer:"3.0.2"};
 			//var obj = {rspCode:"0000",rspDesc:"成功",os:"iOS",osVer:"4.4.4",appVer:"1.02.0"};
 			//var obj = {rspCode:"0000",rspDesc:"成功",os:"iOS",osVer:"4.4.4",appVer:"3.0.2"};
 			var obj = {rspCode:"0000",rspDesc:"成功",os:"iOS",osVer:"4.4.4",appVer:"3.0.3"};

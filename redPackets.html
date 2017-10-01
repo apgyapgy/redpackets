@@ -12,7 +12,7 @@
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/LAB.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/spin.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/swiper.jquery.min.js"></script>
-		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/theme_ver.js?v=1.0.2"></script>
+		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/theme_ver.js?v=1.0.3"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/fontSize.js"></script>
 	</head>
 	<body>
@@ -178,8 +178,8 @@
 														+'</div>'
 														+'<div class="info_wrap">'
 															+'<div class="voucher">'
-																+'<div class="voucher_price"><span>领券</span><b>'+_qprice+'元</b></div>'
-																+'<div class="buy_price">券后价:￥'+_opstr+'</div>'
+																+'<div class="voucher_price"><span>红包</span><b>'+_qprice+'元</b></div>'
+																+'<div class="buy_price">优惠价:￥'+_opstr+'</div>'
 															+'</div>'
 															+'<div class="name">'+_lists[j].title+'</div>'
 															+'<span class="solded">已售<b>'+_solded+'</b>件</span>'
@@ -228,10 +228,10 @@
 					}
 					//点击商品跳转页面
 					$(".swiper-wrapper").on("click",".onclick",function(){ //oprStat(userId, 'appIndex', 'clk', SJMD);
-						var _compareUrl = 'https://uland.taobao.com/thb?pid=mm_124210582_30222621_111850426';
-						var _dataUrl = $(this).attr("data-url");
-						//_jump($(this));
-						if(_compareUrl === _dataUrl){
+						//var _compareUrl = 'https://uland.taobao.com/thb?pid=mm_124210582_30222621_111850426';
+						//var _dataUrl = $(this).attr("data-url");
+						_jump($(this));
+						/*if(_compareUrl === _dataUrl){
 							var _this = this;
 							$.ajax({
 								url:"https://fly.fuiou.com/app/staClickCount.sxf?FM={'user':'"+userId+"','eventDetail':'advert'}",
@@ -266,7 +266,7 @@
 							});
 						}else{
 							_jump($(this));
-						}
+						}*/
 						
 					});
 					$("#content").on("click",".con .list .onclick",function(){
@@ -310,41 +310,35 @@
 							"isCloseCurrent":false
 						};
 						if(flag){//如果点击的是title
-							if(_url.indexOf("redPackets") != -1){//非淘宝链接
+							if(_url.indexOf("redPackets") != -1){//非淘宝链接,不显示原生bar
 								_param.showBar = "0";
 								_openTaobaoFlag = false;
 							}
 						}
 						console.log("open new page param:",_param);
-						if(iosCanJump){
+						if(iosCanJump){//ios 版本在3.0.2 android 3.0.1以下 h5跳转
 							if(_openTaobaoFlag){//如果title是淘宝链接，外呼淘宝
 								try{
 									var _tbParam = {
 										url:_url
-									}
-									//如果是顶部banner 且是安卓系统，传openType为2，用H5打开页面
-									if(_obj.hasClass("swiper-slide") && Ptp == 2){
-										_tbParam.openType = 2;
-										console.log("banner用h5打开");
-									}else{
-										console.log("淘宝打开");
-									}
+									};
+									//如果是顶部banner ，传openType为2，用H5打开页面
+									/*if(_obj.hasClass("swiper-slide")){
+										_tbParam.openType = 2; 
+									}*/
 									console.log("taobaoParam:",_tbParam);
 									fuApp.openTaobao(function(e){
 									},function(e){
 										openNewPage(_url,_param);
 									},_tbParam);
 								}catch(e){
-									console.log("淘宝打开失败，用h5打开");
 									openNewPage(_url,_param);
 								}
-							}else{
+							}else{//title不是淘宝链接，h5打开
 								//_obj.removeClass("actived");
-								console.log("链接不是淘宝链接，h5打开");
 								openNewPage(_url,_param);
 							}
 						}else{
-							console.log("ios不能跳转，h5打开");
 							openNewPage(_url,_param);
 						}
 					}
@@ -478,6 +472,9 @@
 									Ver = data.appVer;
 									if(data.os == "android"){
 										Ptp = 2;
+										if(data.appVer <= '3.0.1'){
+											iosCanJump = false;
+										}
 									}else{
 										Ptp = 1;
 										if(data.appVer <= '3.0.2'){

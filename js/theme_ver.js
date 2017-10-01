@@ -1,4 +1,4 @@
-var fuappJs_v=1.2;
+var fuappJs_v=1.3;
 var j_lazyload_v=1.1;
 var swiper_v=1.1;
 var common_v=4.1;
