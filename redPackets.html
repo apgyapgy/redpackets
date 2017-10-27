@@ -6,7 +6,7 @@
 		<title>淘宝红包</title>
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/common.min.css" />
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/swipe.min.css" />
-		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css?v=1.0.3" />
+		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/test/css/redPackets.css?v=1.0.4" />
 		<!--<link rel="stylesheet" href="css/redPackets.css" />-->
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/jquery-1.8.2.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/LAB.min.js"></script>
@@ -42,9 +42,15 @@
 			<span class="words">顶部</span>
 		</div>-->
 		<div id="top"></div>
+		<div id="icon" class="onclick" data-mid="hb_icon" data-url="https://uland.taobao.com/thb?pid=mm_124210582_30222621_111842540"></div>
+		<div id="toast">
+			<span class="user">153****7950</span>
+			<span class="couponPrice">成功领取了一个<b></b>元红包</span>
+		</div>
 	</body>
 	<script src="https://static.fuiou.com/sys/o2o/redpackets/js/stat_o2o.js"></script>
 	<script type="text/javascript">
+		//return;
 		$(function(){
 			var createLoadingTip = function(){
 				var opts = {
@@ -92,6 +98,7 @@
 				.script("js/jquery.lazyload.min.js")
 				.script(serverIP_JS + 'js/common_asy.js?v=' + common_asy_v).wait(function(){
 					var userId,networkTp,Ptp,Ver,Phone,countDownArr=[],subjectId;//userId = "15316117950";
+					var _couponsArr = [],_getTimer=null;
 					//var _pre = "http://192.168.42.26:8088/",_imgPre="http://192.168.8.18:9999/";
 					//var _pre = "https://buy.fuiou.com/TEST/",_imgPre = "https://static.fuiou.com/sys/o2o/";//测试
 					var _pre = "https://buy.fuiou.com/",_imgPre = "https://static.fuiou.com/sys/o2o/";
@@ -143,6 +150,7 @@
 								}
 								if(_types){
 									var _domArr = [];
+									_couponsArr = [];
 									for(var i = 0;i < _types.length;i++){
 										var _lists = _types[i].groupons;
 										var _domstr = '<div class="con"><img class="title onclick oprStat" data-mid="'+_types[i].tpName+'" data-url="'+_types[i].images.linkUrl+'" src="'+(_imgPre+_types[i].images.imgUrl)+'"/><ul class="list clearfix onclick">';
@@ -185,6 +193,7 @@
 															+'<span class="solded">已售<b>'+_solded+'</b>件</span>'
 														+'</div>'
 													+'</li>';
+											_couponsArr.push(_lists[j]["oprice"] - _lists[j]["gprice"]);
 										}
 										_domstr += '</ul></div>';
 										_domArr.push(_domstr);
@@ -217,6 +226,7 @@
 										} 
 									}
 									_countDown(countDownArr);//开始倒计时
+									_showGetted();
 								}
 								$("#loading").hide();//loading隐藏
 							},
@@ -279,6 +289,9 @@
 						$(this).addClass("actived");*/
 						_jump($(this),true);
 					});
+					$("#icon").on("click",function(){
+						_jump($(this));
+					});
 					//事件埋点
 					$(".swiper-wrapper").on("click",".oprStat",function(){
 						var _mid = $(this).attr("data-mid");
@@ -292,6 +305,12 @@
 						console.log("userId:",userId,",os:",_os,",mid:",_mid);
 						oprStat(userId,_os,"clk",_mid);
 					});
+					$("#icon").on('click',function(){
+						var _mid = $(this).attr("data-mid");
+						var _os = Android?"Android":"IOS";
+						console.log("userId:",userId,",os:",_os,",mid:",_mid);
+						oprStat(userId,_os,"clk",_mid);
+					})
 					//跳转页面
 					var _jump = function(_obj,flag){
 						var _url = _obj.attr("data-url");
@@ -430,6 +449,27 @@
 						}
 						_render();
 					}
+					//领用弹窗 显示隐藏
+					var _showGetted = function(){
+						var _phonePre = [134,135,136,137,138,139,147,150,151,157,158,159,170,178,182,183,184,187,188,130,131,132,145,152,155,156,171,176,185,186,133,134,153,170,177,180,181,189];
+						_getTimer = setInterval(function(){
+							if($("#toast").css('display') == 'none'){
+								var _phone = "";
+								var _random = parseInt(Math.random()*_phonePre.length);
+								_phone += _phonePre[_random]+'****';
+								_phone += parseInt(Math.random()*10);
+								_phone += parseInt(Math.random()*10);
+								_phone += parseInt(Math.random()*10);
+								_phone += parseInt(Math.random()*10);
+								var _couponP = _couponsArr[parseInt(Math.random()*_couponsArr.length)];
+								$("#toast .user").html(_phone);
+								$("#toast .couponPrice b").html(_couponP/100);
+								$("#toast").fadeIn(1000);
+							}else{
+								$("#toast").fadeOut(1000);
+							}
+						},3000);
+					}
 					//返回顶部按钮
 					$("#top").on("click",function(){
 						/*$('html,body').stop().animate({
@@ -440,13 +480,19 @@
 					$(window).on("scroll",function(e){
 						var _scrollTop = $(window).scrollTop();
 						var _height = $(window).innerHeight();
-						if(_scrollTop > _height){
+						if(_scrollTop > 1.5*_height){
 							if($("#top").css("display") == "none"){
 								$("#top").show();
 							}
+							if($("#icon").css("display") == 'block'){
+								$("#icon").fadeOut(1000);
+							}
 						}else{
 							if($("#top").css("display") == "block"){
-								$("#top").hide();
+								$("#top").hide('slow');
+							}
+							if($("#icon").css('display') == 'none'){
+								$("#icon").fadeIn(1000);
 							}
 						}
 					});

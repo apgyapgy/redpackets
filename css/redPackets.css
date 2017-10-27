@@ -273,29 +273,72 @@ body>.header{
 	background:url(https://static.fuiou.com/sys/o2o/redpackets/img/redpackets/toTop.png) no-repeat center;
 	background-size:.8rem auto;
 }
-/*#top{
+/*#icon*/
+#icon{
+	position:fixed;
+	right:.1rem;
+	top:3.5rem;
+	width:1.2rem;
+	height:1.2rem;
+	background:url(https://static.fuiou.com/sys/o2o/redpackets/test/img/redpackets/icon.png) no-repeat center;
+	background-size:1.2rem 1.2rem;
+	z-index:10;
+	-moz-animation: shake 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate-reverse both;
+	-ms-animation: shake 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate-reverse both;
+	-webkit-animation: shake 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate-reverse both;
+	animation: shake 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate-reverse both;
+}
+@-moz-keyframes shake{
+	0%, 60% {-moz-transform: translate3d(-1px, 0, 0);}
+	65%, 95% {-moz-transform: translate3d(2px, 0, 0);}
+	70%, 80%, 90% {-moz-transform: translate3d(-3px, 0, 0);}
+	75%, 85% {-moz-transform: translate3d(3px, 0, 0);}
+}
+@-ms-keyframes shake{
+	0%, 60% {-ms-transform: translate3d(-1px, 0, 0);}
+	65%, 95% {-ms-transform: translate3d(2px, 0, 0);}
+	70%, 80%, 90% {-ms-transform: translate3d(-3px, 0, 0);}
+	75%, 85% {-ms-transform: translate3d(3px, 0, 0);}
+}
+@-webkit-keyframes shake{
+	0%, 60% {-webkit-transform: translate3d(-1px, 0, 0);}
+	65%, 95% {-webkit-transform: translate3d(2px, 0, 0);}
+	70%, 80%, 90% {-webkit-transform: translate3d(-3px, 0, 0);}
+	75%, 85% {-webkit-transform: translate3d(3px, 0, 0);}
+}
+@keyframes shake{
+	0%, 60% {transform: translate3d(-1px, 0, 0);}
+	65%, 95% {transform: translate3d(2px, 0, 0);}
+	70%, 80%, 90% {transform: translate3d(-3px, 0, 0);}
+	75%, 85% {transform: translate3d(3px, 0, 0);}
+}/*toast*/
+#toast{
 	display:none;
 	position:fixed;
-	right:.5rem;
-	bottom:1rem;
-	width:.9rem;
-	height:.9rem;
-	border-radius:50%;
-	background:#fff;
-	border:1px solid #ccc;
-	box-sizing: border-box;
+	top:1.1rem;
+	left:.1rem;
+	width:3.1rem;
+	height:.78rem;
+	border:1px solid #ce929d;
+	color:#fff;
+	font-size:.22rem;
+	line-height:.30rem;
+	border-radius:.2rem;
+	background:rgba(0,0,0,.6);
+	z-index:10;
 }
-#top>span{
+#toast.active{
 	display:block;
-	width:100%;
-	height:50%;
 }
-#top>span.icon{
-	background:url(https://static.fuiou.com/sys/o2o/redpackets/img/redpackets/top.png) no-repeat center bottom;
-	background-size:.24rem .28rem;
+#toast span{
+	float:left;
+	padding-left:.2rem;
+	height:.32rem;
+	line-height:.32rem;
 }
-#top>span.words{
-	font-size:12px;
-	line-height:.3rem;
-	text-align:center;
-}*/
+#toast span.user{
+	margin-top:.05rem;
+}
+#toast span b{
+	font-weight:normal;
+}
