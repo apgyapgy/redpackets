@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>领取优惠券</title>
+        <meta charset="UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="grey" />
+        <script src="http://haibo.yaomihe.com//h5/lib/zepto.1.1.6.min.js"></script>
+        <script src="http://haibo.yaomihe.com//h5/lib/zepto.1.1.6.touch.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://st2.lanlanlife.com/release/static/h5/1.2.0/css/base_be3a192.css"/>
+        <script>
+            var _hmt = _hmt || [];
+//            (function() {
+//                var hm = document.createElement("script");
+//                hm.src = "https://hm.baidu.com/hm.js?8ae110a91418e080942f939793060555";
+//                var s = document.getElementsByTagName("script")[0];
+//                s.parentNode.insertBefore(hm, s);
+//            })();
+        </script>
+
+    </head>
+    <body style="padding-top:0">
+        <script type="text/javascript">
+            window.mobileUtil = (function(win, doc) {
+                var UA = navigator.userAgent,
+                    isAndroid = /android|adr/gi.test(UA),
+                    isIOS = /iphone|ipod|ipad/gi.test(UA) && !isAndroid,
+                    isBlackBerry = /BlackBerry/i.test(UA),
+                    isWindowPhone = /IEMobile/i.test(UA),
+                    isMobile = isAndroid || isIOS || isBlackBerry || isWindowPhone;
+                return {
+                    isAndroid: isAndroid,
+                    isIOS: isIOS,
+                    isMobile: isMobile,
+                    isWeixin: /MicroMessenger/gi.test(UA),
+                    isQQ: /QQ/gi.test(UA)
+                };
+            })(window, document);
+
+            !(function (doc, win) {
+                var docEl = doc.documentElement,resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',fsize,
+                fn = function () {
+                    var cWidth = !mobileUtil.isMobile ? 750 : docEl.clientWidth;
+                    fsize = cWidth/7.5;
+                    cWidth && (docEl.style.fontSize = 2 * fsize + 'px');
+                };
+                fn();
+                if (!doc.addEventListener) return;
+                win.addEventListener(resizeEvt, fn, false);
+            })(document, window);
+        </script>
+        <style>
+            .wakeup{
+                width: 100%;
+                height:100%;
+                background-color: #FFF;
+                text-align: center;
+            }
+            .wakeup img{
+                margin-top: 50px;
+                width: 111px;
+                height: 111px;
+            }
+            .btn{
+                display: block;
+                margin: 0 auto;
+                height:50px;
+                line-height: 50px;
+                width: 200px;
+                font-size: 16px;
+                border: 1px solid #FE814B;
+                color: #FE814B;
+                border-radius: 25px;
+            }
+        </style>
+        <div class="wakeup">
+            <img src="http://oss1.lanlanlife.com/fb226b5e06d068ec919c8872d0d177bb_222x222.png">
+            <p style="padding:15px 0;">正在打开手机淘宝...</p>
+            <a class="btn" id="totb" href="javascript:;">直接访问淘宝网页版</a >
+        </div>
+        <script type="text/javascript" src="https://st2.lanlanlife.com/release/static/h5/1.2.0/js/wakeup_2c51a77.js?v=1.1"></script>
+        <script type="text/javascript">
+        	var _clickable = false;
+        	var _pre = "https://buy.fuiou.com/";
+        	//var _pre = "http://192.168.8.18:2208/";
+        	var _url = '';
+        	var _groupId = getAddressParam('grouponId');
+        	console.log("groupId:",_groupId);
+        	if(_groupId){
+        		getUrl();
+        	}else{
+        		getInfoFail();
+        	}
+        	//点击 直接访问淘宝网页版 按钮
+        	$("#totb").on("click",function(){
+        		if(!_clickable){
+        			return;
+        		}
+        		location.href = _url;
+        	});
+        	
+        	function getUrl(){
+        		$.ajax({
+					url:_pre+"100009",
+					type:"GET",
+					dataType:"jsonp",
+					async:true,
+					jsonp:'jsonpCallback',
+					timeout:20000,
+					cache:false,
+					contentType:"application/x-www-form-urlencoded;charset=utf-8",
+					data:{
+						userId:'18818181818',
+						grouponId: _groupId,
+						status:2
+					},
+					success:function(data){
+						if(data.rspCd == '0000'){
+							var _data = data.groupon;
+							if(_data.outLinkUrl){
+								_url = _data.outLinkUrl;
+								location.href = _data.outLinkUrl;
+							}
+						}else{
+							getInfoFail();
+						}
+					},
+					error:function(data){
+						$('.banner').html('<p class="errorsTip">数据获取失败，请稍后再试。</p>');
+						$("#loading").hide();
+					}
+				});
+        	}
+        	
+        	function getInfoFail(){
+        		$(".wakeup img").attr("src","https://static.fuiou.com/sys/o2o/redpackets/img/redpackets/cry.png");
+				$(".wakeup p").html("哎呀，走丢了，请稍后重试!");
+				$("#totb").remove();
+        	}
+            function getAddressParam(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]); return null;
+			}
+        </script>    
+    </body>
+</html>

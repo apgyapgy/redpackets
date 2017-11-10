@@ -6,7 +6,7 @@
 		<title>淘宝红包</title>
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/common.min.css" />
 		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/swipe.min.css" />
-		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/test/css/redPackets.css?v=1.0.4" />
+		<link rel="stylesheet" href="https://static.fuiou.com/sys/o2o/redpackets/css/redPackets.css?v=1.0.5" />
 		<!--<link rel="stylesheet" href="css/redPackets.css" />-->
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/jquery-1.8.2.min.js"></script>
 		<script src="https://static.fuiou.com/sys/o2o/redpackets/js/LAB.min.js"></script>
@@ -37,20 +37,15 @@
 				<span id="sure">朕知道了</span>
 			</div>
 		</div>
-		<!--<div id="top">
-			<span class="icon"></span>
-			<span class="words">顶部</span>
-		</div>-->
 		<div id="top"></div>
-		<div id="icon" class="onclick" data-mid="hb_icon" data-url="https://uland.taobao.com/thb?pid=mm_124210582_30222621_111842540"></div>
+		<div id="icon" class="onclick" data-mid="hb_icon" data-url="https://s.click.taobao.com/pGj1sYw"></div>
 		<div id="toast">
-			<span class="user">153****7950</span>
+			<span class="user"></span>
 			<span class="couponPrice">成功领取了一个<b></b>元红包</span>
 		</div>
 	</body>
 	<script src="https://static.fuiou.com/sys/o2o/redpackets/js/stat_o2o.js"></script>
 	<script type="text/javascript">
-		//return;
 		$(function(){
 			var createLoadingTip = function(){
 				var opts = {
@@ -104,7 +99,6 @@
 					var _pre = "https://buy.fuiou.com/",_imgPre = "https://static.fuiou.com/sys/o2o/";
 					var iosCanJump = true;//判断ios版本是否可跳转淘宝客 3.0.2
 					var _getList = function(){
-						console.log("in getList");
 						$.ajax({
 							url:_pre+"200006",
 							type:"GET",
@@ -451,24 +445,26 @@
 					}
 					//领用弹窗 显示隐藏
 					var _showGetted = function(){
-						var _phonePre = [134,135,136,137,138,139,147,150,151,157,158,159,170,178,182,183,184,187,188,130,131,132,145,152,155,156,171,176,185,186,133,134,153,170,177,180,181,189];
-						_getTimer = setInterval(function(){
-							if($("#toast").css('display') == 'none'){
-								var _phone = "";
-								var _random = parseInt(Math.random()*_phonePre.length);
-								_phone += _phonePre[_random]+'****';
-								_phone += parseInt(Math.random()*10);
-								_phone += parseInt(Math.random()*10);
-								_phone += parseInt(Math.random()*10);
-								_phone += parseInt(Math.random()*10);
-								var _couponP = _couponsArr[parseInt(Math.random()*_couponsArr.length)];
-								$("#toast .user").html(_phone);
-								$("#toast .couponPrice b").html(_couponP/100);
-								$("#toast").fadeIn(1000);
-							}else{
-								$("#toast").fadeOut(1000);
-							}
-						},3000);
+						if(_couponsArr.length>0){
+							var _phonePre = [134,135,136,137,138,139,147,150,151,157,158,159,170,178,182,183,184,187,188,130,131,132,145,152,155,156,171,176,185,186,133,134,153,170,177,180,181,189];
+							_getTimer = setInterval(function(){
+								if($("#toast").css('display') == 'none'){
+									var _phone = "";
+									var _random = parseInt(Math.random()*_phonePre.length);
+									_phone += _phonePre[_random]+'****';
+									_phone += parseInt(Math.random()*10);
+									_phone += parseInt(Math.random()*10);
+									_phone += parseInt(Math.random()*10);
+									_phone += parseInt(Math.random()*10);
+									var _couponP = _couponsArr[parseInt(Math.random()*_couponsArr.length)];
+									$("#toast .user").html(_phone);
+									$("#toast .couponPrice b").html(_couponP/100);
+									$("#toast").fadeIn(1000);
+								}else{
+									$("#toast").fadeOut(1000);
+								}
+							},3000);
+						}
 					}
 					//返回顶部按钮
 					$("#top").on("click",function(){
